@@ -2,11 +2,16 @@ package ru.liga.employee;
 
 import ru.liga.employee.domain.Employee;
 
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class App {
     public static void main(String[] args) {
+
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
 
         List<String> strings = namesOfYoungAndRichEmployees(Arrays.asList(
                 new Employee("Витя", 20, 110000),
@@ -23,6 +28,11 @@ public class App {
      * @return Список имен сотрудников отсортированном по алфавиту, у которых зарплата больше 100 000 и возраст меньше 21 лет
      */
     public static List<String> namesOfYoungAndRichEmployees(List<Employee> allEmployees) {
-        throw new UnsupportedOperationException();
+        return allEmployees.stream()
+                .filter(employee -> employee.getAge() < 21)
+                .filter(employee -> employee.getSalary() > 100000)
+                .map(Employee::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
